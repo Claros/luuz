@@ -102,7 +102,7 @@ class Room
 	
 	public void addItem(String name, String description, int weight)
 	{
-		this.items.put(name, new Item(description, weight));
+		this.items.put(name, new Item(name, description, weight));
 	}
 	
 	public String getItemString()
@@ -116,5 +116,25 @@ class Room
         }
         
         return returnString;
+	}
+	
+	public boolean hasItem(String key)
+	{
+		return items.containsKey(key);
+	}
+	
+	public void removeItem(String key)
+	{
+		items.remove(key);
+	}
+	
+	public Item getItem(String key)
+	{
+		return items.get(key);
+	}
+	
+	public void addItem(String name, Item item)
+	{
+		this.items.put(name, item);
 	}
 }

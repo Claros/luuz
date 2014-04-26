@@ -117,6 +117,10 @@ public class GameEngine
         	back(command);
         else if (commandWord.equals("test"))
         	test(command);
+        else if (commandWord.equals("take"))
+        	take(command);
+        else if (commandWord.equals("drop"))
+        	drop();
         
         gui.print("\n");
     }
@@ -216,7 +220,35 @@ public class GameEngine
         } 
         catch (FileNotFoundException pObjetException) 
         {  
-        	gui.println("Le nom du fichier est incorrect.");
+        	gui.println("File does not exist.");
         } 
+    }
+    
+    private void take(Command command)
+    {
+        if (!command.hasSecondWord()) {
+            gui.println("Take what?");
+            return;
+        }
+        
+        if (player.getCurrentRoom().hasItem(command.getSecondWord()))
+        {
+        	Item item = player.getCurrentRoom().getItem(command.getSecondWord());
+        	player.setItem(item);
+        	player.getCurrentRoom().removeItem(command.getSecondWord());
+        	gui.println("You took " + item.getName());
+        } else {
+        	gui.println(command.getSecondWord() + " does not exist.");
+        }
+    }
+    
+    private void drop()
+    {
+    	if (player.getItem() != null)
+    	{
+    		player.getCurrentRoom().addItem(player.getItem().getName(), player.getItem());
+        	gui.println("You droped " + player.getItem().getName());
+    		player.setItem(null);
+    	}
     }
 }

@@ -4,6 +4,7 @@ import java.util.Stack;
 public class Player {
     private Room currentRoom;
     private Stack<Room> previousRoom;
+    private Item item;
     
     public Player()
     {
@@ -37,5 +38,13 @@ public class Player {
 	{
 		this.previousRoom.add(currentRoom);
 		this.currentRoom = pRoom;
+	}
+
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
 	}
 }
