@@ -88,7 +88,7 @@ class Room
     {
     	String vS = "You are " + description + ".\n" + getExitString();
     	if (!items.isEmpty())
-    		vS += "Items: " + this.items.getItemString();
+    		vS += "\nItems: " + this.items.getItemString();
     	return vS;
     }
 

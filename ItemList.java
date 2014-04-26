@@ -63,4 +63,24 @@ public class ItemList {
 	public void addItem(Item item) {
 		items.put(item.getName(), item);
 	}
+	
+	public int getTotalWeight()
+	{
+		if (!items.isEmpty())
+		{
+	    	int total = 0;
+	        Set<String> keys = items.keySet();
+	        
+	        for (String key : keys)
+	        {
+	        	total += this.items.get(key).getWeight();
+	        }
+	        
+	        return total;
+		}
+		else
+		{
+			return 0;
+		}
+	}
 }

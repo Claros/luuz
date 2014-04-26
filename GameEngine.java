@@ -25,7 +25,7 @@ public class GameEngine
     public GameEngine() 
     {
         parser = new Parser();
-        player = new Player();
+        player = new Player(10);
         createRooms();
     }
 
@@ -80,7 +80,8 @@ public class GameEngine
     	gui.println("Type 'help' if you need help.");
     	gui.print("\n");
         gui.println(player.getCurrentRoom().getLongDescription());
-        gui.println(player.getInventory().getItemString());
+    	gui.println(player.getLongInventory());
+    	gui.print("\n");
         gui.showImage(player.getCurrentRoom().getImageName());
     }
 
@@ -162,7 +163,7 @@ public class GameEngine
         else {
         	player.changeRoom(nextRoom);
             gui.println(player.getCurrentRoom().getLongDescription());
-            gui.println(player.getInventory().getItemString());
+        	gui.println(player.getLongInventory());
             if(player.getCurrentRoom().getImageName() != null)
                 gui.showImage(player.getCurrentRoom().getImageName());
         }
@@ -177,8 +178,7 @@ public class GameEngine
     private void look()
     {
     	gui.println(player.getCurrentRoom().getLongDescription());
-    	if (!player.getInventory().isEmpty())
-    		gui.println("Inventory: " + player.getInventory().getItemString());
+    	gui.println(player.getLongInventory());
     }
     
     private void eat()
@@ -238,9 +238,14 @@ public class GameEngine
         if (player.getCurrentRoom().getItemList().hasItem(command.getSecondWord()))
         {
         	Item item = player.getCurrentRoom().getItemList().getItem(command.getSecondWord());
-        	player.getInventory().addItem(item);
-        	player.getCurrentRoom().getItemList().removeItem(command.getSecondWord());
-        	gui.println("You took " + item.getName());
+        	if ((player.getInventory().getTotalWeight() + item.getWeight()) > player.getMaxWeight())
+        	{
+        		gui.println("You can not carry more items.");
+        	} else {
+            	player.getInventory().addItem(item);
+            	player.getCurrentRoom().getItemList().removeItem(command.getSecondWord());
+            	gui.println("You took " + item.getName());
+        	}
         } else {
         	gui.println(command.getSecondWord() + " does not exist.");
         }
