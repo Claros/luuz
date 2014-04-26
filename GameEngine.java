@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /**
  *  This class is part of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.
@@ -13,7 +15,7 @@ public class GameEngine
 {
     private Parser parser;
     private Room currentRoom;
-    private Room previousRoom;
+    private Stack<Room> previousRoom;
     private UserInterface gui;
         
     /**
@@ -22,6 +24,7 @@ public class GameEngine
     public GameEngine() 
     {
         createRooms();
+        previousRoom = new Stack<Room>();
         parser = new Parser();
     }
 
@@ -147,7 +150,7 @@ public class GameEngine
         if (nextRoom == null)
             gui.println("There is no door!");
         else {
-        	previousRoom = currentRoom;
+        	previousRoom.add(currentRoom);
             currentRoom = nextRoom;
             gui.print("\n");
             gui.println(currentRoom.getLongDescription());
@@ -180,10 +183,10 @@ public class GameEngine
             return;
         }
 
-        if (previousRoom == null)
+        if (previousRoom.empty())
             gui.println("You can't go back!");
         else {
-            currentRoom = previousRoom;
+            currentRoom = previousRoom.pop();
             gui.print("\n");
             gui.println(currentRoom.getLongDescription());
             if(currentRoom.getImageName() != null)
