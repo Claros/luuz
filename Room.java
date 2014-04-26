@@ -31,7 +31,7 @@ class Room
     {
         this.description = description;
         this.exits = new HashMap<String, Room>();
-		this.imageName = image;
+		this.imageName = "images/" + image;
     }
 
     /**
