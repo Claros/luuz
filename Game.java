@@ -107,6 +107,8 @@ class Game
             wantToQuit = quit(command);
         else if (commandWord.equals("look"))
         	look();
+        else if (commandWord.equals("eat"))
+        	eat();
 
         return wantToQuit;
     }
@@ -185,5 +187,10 @@ class Game
     private void look()
     {
     	System.out.println(currentRoom.getLongDescription());
+    }
+    
+    private void eat()
+    {
+    	System.out.println("You have eaten now and you are not hungry any more.");
     }
 }
