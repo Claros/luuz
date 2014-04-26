@@ -87,7 +87,7 @@ class Room
     {
     	String vS = "You are " + description + ".\n" + getExitString();
     	if (item != null)
-    		vS += "\nThere is : " + item.getDescription();
+    		vS += "\nThere is : " + item.getLongDescription();
     	return vS;
     }
 
