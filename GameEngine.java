@@ -80,6 +80,7 @@ public class GameEngine
     	gui.println("Type 'help' if you need help.");
     	gui.print("\n");
         gui.println(player.getCurrentRoom().getLongDescription());
+        gui.println(player.getItemString());
         gui.showImage(player.getCurrentRoom().getImageName());
     }
 
@@ -120,7 +121,7 @@ public class GameEngine
         else if (commandWord.equals("take"))
         	take(command);
         else if (commandWord.equals("drop"))
-        	drop();
+        	drop(command);
         
         gui.print("\n");
     }
@@ -161,6 +162,7 @@ public class GameEngine
         else {
         	player.changeRoom(nextRoom);
             gui.println(player.getCurrentRoom().getLongDescription());
+            gui.println(player.getItemString());
             if(player.getCurrentRoom().getImageName() != null)
                 gui.showImage(player.getCurrentRoom().getImageName());
         }
@@ -175,6 +177,7 @@ public class GameEngine
     private void look()
     {
     	gui.println(player.getCurrentRoom().getLongDescription());
+        gui.println(player.getItemString());
     }
     
     private void eat()
@@ -234,7 +237,7 @@ public class GameEngine
         if (player.getCurrentRoom().hasItem(command.getSecondWord()))
         {
         	Item item = player.getCurrentRoom().getItem(command.getSecondWord());
-        	player.setItem(item);
+        	player.addItem(item);
         	player.getCurrentRoom().removeItem(command.getSecondWord());
         	gui.println("You took " + item.getName());
         } else {
@@ -242,13 +245,24 @@ public class GameEngine
         }
     }
     
-    private void drop()
+    private void drop(Command command)
     {
-    	if (player.getItem() != null)
+        if (!command.hasSecondWord()) {
+            gui.println("Drop what?");
+            return;
+        }
+        
+        String name = command.getSecondWord();
+        
+    	if (player.hasItem(name))
     	{
-    		player.getCurrentRoom().addItem(player.getItem().getName(), player.getItem());
-        	gui.println("You droped " + player.getItem().getName());
-    		player.setItem(null);
+    		player.getCurrentRoom().addItem(name, player.getItem(name));
+        	gui.println("You droped " + name);
+    		player.removeItem(name);
+    	}
+    	else
+    	{
+    		gui.println("You does not have this item.");
     	}
     }
 }

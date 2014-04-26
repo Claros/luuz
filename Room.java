@@ -107,12 +107,12 @@ class Room
 	
 	public String getItemString()
 	{
-    	String returnString = new String("Items: \n");
+    	String returnString = new String("Items: ");
         Set<String> keys = items.keySet();
         
         for (String key : keys)
         {
-        	returnString += "- " + this.items.get(key).getLongDescription() + '\n';
+        	returnString += "\n- " + this.items.get(key).getLongDescription();
         }
         
         return returnString;
