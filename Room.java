@@ -21,7 +21,7 @@ class Room
     public String description;
     private HashMap<String, Room> exits;
 	private String imageName;
-	private HashMap<String, Item> items;
+	private ItemList items;
 
     /**
      * Create a room described "description". Initially, it has
@@ -33,7 +33,7 @@ class Room
         this.description = description;
         this.exits = new HashMap<String, Room>();
 		this.imageName = "images/" + image;
-		this.items = new HashMap<String, Item>();
+		this.items = new ItemList();
     }
 
     /**
@@ -88,7 +88,7 @@ class Room
     {
     	String vS = "You are " + description + ".\n" + getExitString();
     	if (!items.isEmpty())
-    		vS += this.getItemString();
+    		vS += "Items: " + this.items.getItemString();
     	return vS;
     }
 
@@ -100,41 +100,8 @@ class Room
 		return imageName;
 	}
 	
-	public void addItem(String name, String description, int weight)
+	public ItemList getItemList()
 	{
-		this.items.put(name, new Item(name, description, weight));
-	}
-	
-	public String getItemString()
-	{
-    	String returnString = new String("Items: ");
-        Set<String> keys = items.keySet();
-        
-        for (String key : keys)
-        {
-        	returnString += "\n- " + this.items.get(key).getLongDescription();
-        }
-        
-        return returnString;
-	}
-	
-	public boolean hasItem(String key)
-	{
-		return items.containsKey(key);
-	}
-	
-	public void removeItem(String key)
-	{
-		items.remove(key);
-	}
-	
-	public Item getItem(String key)
-	{
-		return items.get(key);
-	}
-	
-	public void addItem(String name, Item item)
-	{
-		this.items.put(name, item);
+		return items;
 	}
 }

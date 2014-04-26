@@ -63,8 +63,8 @@ public class GameEngine
 
         office.setExit("west", lab);
         
-        outside.addItem("caca", "A big shit", 10);
-        outside.addItem("pipi", "It's quite sliding there...", 1);
+        outside.getItemList().addItem("caca", "A big shit", 10);
+        outside.getItemList().addItem("pipi", "It's quite sliding there...", 1);
 
         player.setCurrentRoom(outside);  // start game outside
     }
@@ -80,7 +80,7 @@ public class GameEngine
     	gui.println("Type 'help' if you need help.");
     	gui.print("\n");
         gui.println(player.getCurrentRoom().getLongDescription());
-        gui.println(player.getItemString());
+        gui.println(player.getInventory().getItemString());
         gui.showImage(player.getCurrentRoom().getImageName());
     }
 
@@ -162,7 +162,7 @@ public class GameEngine
         else {
         	player.changeRoom(nextRoom);
             gui.println(player.getCurrentRoom().getLongDescription());
-            gui.println(player.getItemString());
+            gui.println(player.getInventory().getItemString());
             if(player.getCurrentRoom().getImageName() != null)
                 gui.showImage(player.getCurrentRoom().getImageName());
         }
@@ -177,7 +177,8 @@ public class GameEngine
     private void look()
     {
     	gui.println(player.getCurrentRoom().getLongDescription());
-        gui.println(player.getItemString());
+    	if (!player.getInventory().isEmpty())
+    		gui.println("Inventory: " + player.getInventory().getItemString());
     }
     
     private void eat()
@@ -234,11 +235,11 @@ public class GameEngine
             return;
         }
         
-        if (player.getCurrentRoom().hasItem(command.getSecondWord()))
+        if (player.getCurrentRoom().getItemList().hasItem(command.getSecondWord()))
         {
-        	Item item = player.getCurrentRoom().getItem(command.getSecondWord());
-        	player.addItem(item);
-        	player.getCurrentRoom().removeItem(command.getSecondWord());
+        	Item item = player.getCurrentRoom().getItemList().getItem(command.getSecondWord());
+        	player.getInventory().addItem(item);
+        	player.getCurrentRoom().getItemList().removeItem(command.getSecondWord());
         	gui.println("You took " + item.getName());
         } else {
         	gui.println(command.getSecondWord() + " does not exist.");
@@ -254,11 +255,11 @@ public class GameEngine
         
         String name = command.getSecondWord();
         
-    	if (player.hasItem(name))
+    	if (player.getInventory().hasItem(name))
     	{
-    		player.getCurrentRoom().addItem(name, player.getItem(name));
+    		player.getCurrentRoom().getItemList().addItem(name, player.getInventory().getItem(name));
         	gui.println("You droped " + name);
-    		player.removeItem(name);
+    		player.getInventory().removeItem(name);
     	}
     	else
     	{
