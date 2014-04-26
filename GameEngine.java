@@ -57,6 +57,8 @@ public class GameEngine
         lab.setExit("east", office);
 
         office.setExit("west", lab);
+        
+        outside.setItem("Caca", 10);
 
         currentRoom = outside;  // start game outside
     }

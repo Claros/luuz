@@ -21,6 +21,7 @@ class Room
     public String description;
     private HashMap<String, Room> exits;
 	private String imageName;
+	private Item item;
 
     /**
      * Create a room described "description". Initially, it has
@@ -84,7 +85,10 @@ class Room
      */
     public String getLongDescription()
     {
-    	return "You are " + description + ".\n" + getExitString();
+    	String vS = "You are " + description + ".\n" + getExitString();
+    	if (item != null)
+    		vS += "\nThere is : " + item.getDescription();
+    	return vS;
     }
 
 	/**
@@ -93,5 +97,10 @@ class Room
 	public String getImageName()
 	{
 		return imageName;
+	}
+	
+	public void setItem(String description, int weight)
+	{
+		this.item = new Item(description, weight);
 	}
 }
