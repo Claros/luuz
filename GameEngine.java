@@ -13,6 +13,7 @@ public class GameEngine
 {
     private Parser parser;
     private Room currentRoom;
+    private Room previousRoom;
     private UserInterface gui;
         
     /**
@@ -108,6 +109,8 @@ public class GameEngine
         	look();
         else if (commandWord.equals("eat"))
         	eat();
+        else if (commandWord.equals("back"))
+        	back(command);
     }
 
     // implementations of user commands:
@@ -144,6 +147,7 @@ public class GameEngine
         if (nextRoom == null)
             gui.println("There is no door!");
         else {
+        	previousRoom = currentRoom;
             currentRoom = nextRoom;
             gui.print("\n");
             gui.println(currentRoom.getLongDescription());
@@ -166,5 +170,24 @@ public class GameEngine
     private void eat()
     {
     	gui.println("You have eaten now and you are not hungry any more.");
+    }
+
+    private void back(Command command) 
+    {
+        if(command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            gui.println("Back what?");
+            return;
+        }
+
+        if (previousRoom == null)
+            gui.println("You can't go back!");
+        else {
+            currentRoom = previousRoom;
+            gui.print("\n");
+            gui.println(currentRoom.getLongDescription());
+            if(currentRoom.getImageName() != null)
+                gui.showImage(currentRoom.getImageName());
+        }
     }
 }
