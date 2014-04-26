@@ -72,5 +72,20 @@ class Room
     	}
     	return null;
     }
-
+    
+    public String getExitString()
+    {
+    	String vS = new String("Exits: ");
+    	
+        if(this.northExit != null)
+        	vS += "north ";
+        if(this.eastExit != null)
+        	vS += "east ";
+        if(this.southExit != null)
+        	vS += "south ";
+        if(this.westExit != null)
+        	vS += "west ";
+    	
+    	return vS;
+    }
 }
