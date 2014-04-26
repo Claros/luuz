@@ -33,6 +33,16 @@ class Room
     }
 
     /**
+     * Define an exit from this room.
+     * @param direction The direction of the exit.
+     * @param neighbor  The room to which the exit leads.
+     */
+    public void setExit(String direction, Room neighbor) 
+    {
+        exits.put(direction, neighbor);
+    }
+
+    /**
      * Define the exits of this room.  Every direction either leads
      * to another room or is null (no exit there).
      */
@@ -49,10 +59,10 @@ class Room
     }
 
     /**
-     * Return the description of the room (the one that was defined
-     * in the constructor).
+     * @return The short description of the room
+     * (the one that was defined in the constructor).
      */
-    public String getDescription()
+    public String getShortDescription()
     {
         return description;
     }
