@@ -105,6 +105,8 @@ class Game
             goRoom(command);
         else if (commandWord.equals("quit"))
             wantToQuit = quit(command);
+        else if (commandWord.equals("look"))
+        	look();
 
         return wantToQuit;
     }
@@ -178,5 +180,10 @@ class Game
         System.out.println("You are " + currentRoom.getDescription());
         System.out.print("Exits: " + currentRoom.getExitString());
         System.out.println();
+    }
+    
+    private void look()
+    {
+    	System.out.println(currentRoom.getLongDescription());
     }
 }
