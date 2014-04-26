@@ -20,16 +20,18 @@ class Room
 {
     public String description;
     private HashMap<String, Room> exits;
+	private String imageName;
 
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
      * "an open court yard".
      */
-    public Room(String description) 
+    public Room(String description, String image) 
     {
         this.description = description;
         this.exits = new HashMap<String, Room>();
+		this.imageName = image;
     }
 
     /**
@@ -40,22 +42,6 @@ class Room
     public void setExit(String direction, Room neighbor) 
     {
         exits.put(direction, neighbor);
-    }
-
-    /**
-     * Define the exits of this room.  Every direction either leads
-     * to another room or is null (no exit there).
-     */
-    public void setExits(Room north, Room east, Room south, Room west) 
-    {
-        if(north != null)
-        	exits.put("north", north);
-        if(east != null)
-            exits.put("east", east);
-        if(south != null)
-            exits.put("south", south);
-        if(west != null)
-            exits.put("west", west);
     }
 
     /**
@@ -98,6 +84,14 @@ class Room
      */
     public String getLongDescription()
     {
-    	return "You are" + description + ".\n" + getExitString();
+    	return "You are " + description + ".\n" + getExitString();
     }
+
+	/**
+     * Return a string describing the room's image name
+     */
+	public String getImageName()
+	{
+		return imageName;
+	}
 }

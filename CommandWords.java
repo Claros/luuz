@@ -27,7 +27,7 @@ class CommandWords
     /**
      * Check whether a given String is a valid command word. 
      * Return true if it is, false if it isn't.
-     */
+     **/
     public boolean isCommand(String aString)
     {
         for(int i = 0; i < validCommands.length; i++) {
@@ -37,16 +37,16 @@ class CommandWords
         // if we get here, the string was not found in the commands
         return false;
     }
-    
-    /**
-     * Print all valid commands to System.out.
+
+    /*
+     * returns a String of all valid commands.
      */
-    public String showAll()
+    public String getCommandList() 
     {
-    	String vS = new String();
-    	for (String command : validCommands) {
-    		vS += command + " ";
-    	}
-    	return vS;
+        StringBuilder commands = new StringBuilder();
+        for(int i = 0; i < validCommands.length; i++) {
+            commands.append( validCommands[i] + "  " );
+        }
+        return commands.toString();
     }
 }
