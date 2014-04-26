@@ -58,7 +58,8 @@ public class GameEngine
 
         office.setExit("west", lab);
         
-        outside.setItem("Caca", 10);
+        outside.addItem("caca", "A big shit", 10);
+        outside.addItem("pipi", "It's quite sliding there...", 1);
 
         currentRoom = outside;  // start game outside
     }

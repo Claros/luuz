@@ -21,7 +21,7 @@ class Room
     public String description;
     private HashMap<String, Room> exits;
 	private String imageName;
-	private Item item;
+	private HashMap<String, Item> items;
 
     /**
      * Create a room described "description". Initially, it has
@@ -33,6 +33,7 @@ class Room
         this.description = description;
         this.exits = new HashMap<String, Room>();
 		this.imageName = "images/" + image;
+		this.items = new HashMap<String, Item>();
     }
 
     /**
@@ -86,8 +87,8 @@ class Room
     public String getLongDescription()
     {
     	String vS = "You are " + description + ".\n" + getExitString();
-    	if (item != null)
-    		vS += "\nThere is : " + item.getLongDescription();
+    	if (!items.isEmpty())
+    		vS += this.getItemString();
     	return vS;
     }
 
@@ -99,8 +100,21 @@ class Room
 		return imageName;
 	}
 	
-	public void setItem(String description, int weight)
+	public void addItem(String name, String description, int weight)
 	{
-		this.item = new Item(description, weight);
+		this.items.put(name, new Item(description, weight));
+	}
+	
+	public String getItemString()
+	{
+    	String returnString = new String("Items: \n");
+        Set<String> keys = items.keySet();
+        
+        for (String key : keys)
+        {
+        	returnString += "- " + this.items.get(key).getLongDescription() + '\n';
+        }
+        
+        return returnString;
 	}
 }
