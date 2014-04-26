@@ -80,7 +80,6 @@ public class GameEngine
     	gui.println("Type 'help' if you need help.");
     	gui.print("\n");
         gui.println(player.getCurrentRoom().getLongDescription());
-    	gui.println(player.getLongInventory());
     	gui.print("\n");
         gui.showImage(player.getCurrentRoom().getImageName());
     }
@@ -123,6 +122,8 @@ public class GameEngine
         	take(command);
         else if (commandWord.equals("drop"))
         	drop(command);
+        else if (commandWord.equals("items"))
+        	items();
         
         gui.print("\n");
     }
@@ -163,7 +164,6 @@ public class GameEngine
         else {
         	player.changeRoom(nextRoom);
             gui.println(player.getCurrentRoom().getLongDescription());
-        	gui.println(player.getLongInventory());
             if(player.getCurrentRoom().getImageName() != null)
                 gui.showImage(player.getCurrentRoom().getImageName());
         }
@@ -178,7 +178,6 @@ public class GameEngine
     private void look()
     {
     	gui.println(player.getCurrentRoom().getLongDescription());
-    	gui.println(player.getLongInventory());
     }
     
     private void eat()
@@ -270,5 +269,10 @@ public class GameEngine
     	{
     		gui.println("You does not have this item.");
     	}
+    }
+    
+    private void items()
+    {
+    	gui.println(player.getLongInventory());
     }
 }
