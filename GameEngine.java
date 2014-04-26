@@ -142,6 +142,7 @@ public class GameEngine
             gui.println("There is no door!");
         else {
             currentRoom = nextRoom;
+            gui.print("\n");
             gui.println(currentRoom.getLongDescription());
             if(currentRoom.getImageName() != null)
                 gui.showImage(currentRoom.getImageName());

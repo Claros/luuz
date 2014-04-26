@@ -18,6 +18,7 @@ public class UserInterface implements ActionListener
     private JTextField entryField;
     private JTextArea log;
     private JLabel image;
+    private JButton buttonLook, buttonEast, buttonWest, buttonNorth, buttonSouth; 
 
     /**
      * Construct a UserInterface. As a parameter, a Game Engine
@@ -71,6 +72,11 @@ public class UserInterface implements ActionListener
     public void enable(boolean on)
     {
         entryField.setEditable(on);
+        buttonLook.setEnabled(on);
+        buttonNorth.setEnabled(on);
+        buttonSouth.setEnabled(on);
+        buttonEast.setEnabled(on);
+        buttonWest.setEnabled(on);
         if(!on)
             entryField.getCaret().setBlinkRate(0);
     }
@@ -89,13 +95,28 @@ public class UserInterface implements ActionListener
         listScroller.setPreferredSize(new Dimension(200, 200));
         listScroller.setMinimumSize(new Dimension(100,100));
 
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(),
+        		panel2 = new JPanel();
         image = new JLabel();
+
+        buttonLook = new JButton("look");
+        buttonNorth = new JButton("go north");
+        buttonSouth = new JButton("go south");
+        buttonEast = new JButton("go east");
+        buttonWest = new JButton("go west");
 
         panel.setLayout(new BorderLayout());
         panel.add(image, BorderLayout.NORTH);
         panel.add(listScroller, BorderLayout.CENTER);
         panel.add(entryField, BorderLayout.SOUTH);
+        panel.add(buttonLook, BorderLayout.EAST);
+        panel.add(panel2, BorderLayout.WEST);
+
+        panel2.setLayout(new BorderLayout());
+        panel2.add(buttonNorth, BorderLayout.NORTH);
+        panel2.add(buttonSouth, BorderLayout.SOUTH);
+        panel2.add(buttonEast, BorderLayout.EAST);
+        panel2.add(buttonWest, BorderLayout.WEST);
 
         myFrame.getContentPane().add(panel, BorderLayout.CENTER);
 
@@ -105,6 +126,11 @@ public class UserInterface implements ActionListener
         });
 
         entryField.addActionListener(this);
+        buttonLook.addActionListener(this);
+        buttonNorth.addActionListener(this);
+        buttonSouth.addActionListener(this);
+        buttonEast.addActionListener(this);
+        buttonWest.addActionListener(this);
 
         myFrame.pack();
         myFrame.setVisible(true);
@@ -116,9 +142,30 @@ public class UserInterface implements ActionListener
      */
     public void actionPerformed(ActionEvent e) 
     {
-        // no need to check the type of action at the moment.
-        // there is only one possible action: text entry
-        processCommand();
+        if (e.getSource() == entryField)
+        {
+            processCommand();
+        } 
+        else if (e.getSource() == buttonLook)
+        {
+        	engine.interpretCommand("look");
+        }
+        else if (e.getSource() == buttonNorth)
+        {
+        	engine.interpretCommand("go north");
+        }
+        else if (e.getSource() == buttonSouth)
+        {
+        	engine.interpretCommand("go south");
+        }
+        else if (e.getSource() == buttonEast)
+        {
+        	engine.interpretCommand("go east");
+        }
+        else if (e.getSource() == buttonWest)
+        {
+        	engine.interpretCommand("go west");
+        }
     }
 
     /**
