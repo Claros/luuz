@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.util.Stack;
 
 /**
  *  This class is part of the "World of Zuul" application. 
@@ -17,18 +16,17 @@ import java.util.Stack;
 public class GameEngine 
 {
     private Parser parser;
-    private Room currentRoom;
-    private Stack<Room> previousRoom;
     private UserInterface gui;
+    private Player player;
         
     /**
      * Create the game and initialise its internal map.
      */
     public GameEngine() 
     {
-        createRooms();
-        previousRoom = new Stack<Room>();
         parser = new Parser();
+        player = new Player();
+        createRooms();
     }
 
     public void setGUI(UserInterface userInterface)
@@ -68,7 +66,7 @@ public class GameEngine
         outside.addItem("caca", "A big shit", 10);
         outside.addItem("pipi", "It's quite sliding there...", 1);
 
-        currentRoom = outside;  // start game outside
+        player.setCurrentRoom(outside);  // start game outside
     }
 
     /**
@@ -81,8 +79,8 @@ public class GameEngine
     	gui.println("Adventure is a new, incredibly boring adventure game.");
     	gui.println("Type 'help' if you need help.");
     	gui.print("\n");
-        gui.println(currentRoom.getLongDescription());
-        gui.showImage(currentRoom.getImageName());
+        gui.println(player.getCurrentRoom().getLongDescription());
+        gui.showImage(player.getCurrentRoom().getImageName());
     }
 
     /**
@@ -152,16 +150,15 @@ public class GameEngine
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
 
         if (nextRoom == null)
             gui.println("There is no door!");
         else {
-        	previousRoom.add(currentRoom);
-            currentRoom = nextRoom;
-            gui.println(currentRoom.getLongDescription());
-            if(currentRoom.getImageName() != null)
-                gui.showImage(currentRoom.getImageName());
+        	player.changeRoom(nextRoom);
+            gui.println(player.getCurrentRoom().getLongDescription());
+            if(player.getCurrentRoom().getImageName() != null)
+                gui.showImage(player.getCurrentRoom().getImageName());
         }
     }
 
@@ -173,7 +170,7 @@ public class GameEngine
     
     private void look()
     {
-    	gui.println(currentRoom.getLongDescription());
+    	gui.println(player.getCurrentRoom().getLongDescription());
     }
     
     private void eat()
@@ -188,14 +185,13 @@ public class GameEngine
             return;
         }
 
-        if (previousRoom.empty())
+        if (player.hasPreviousRoom())
             gui.println("You can't go back!");
         else {
-            currentRoom = previousRoom.pop();
-            gui.print("\n");
-            gui.println(currentRoom.getLongDescription());
-            if(currentRoom.getImageName() != null)
-                gui.showImage(currentRoom.getImageName());
+        	player.changeRoom(player.getPreviousRoom());
+            gui.println(player.getCurrentRoom().getLongDescription());
+            if(player.getCurrentRoom().getImageName() != null)
+                gui.showImage(player.getCurrentRoom().getImageName());
         }
     }
 
