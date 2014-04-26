@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import java.util.Stack;
 
 /**
@@ -114,6 +117,10 @@ public class GameEngine
         	eat();
         else if (commandWord.equals("back"))
         	back(command);
+        else if (commandWord.equals("test"))
+        	test(command);
+        
+        gui.print("\n");
     }
 
     // implementations of user commands:
@@ -152,7 +159,6 @@ public class GameEngine
         else {
         	previousRoom.add(currentRoom);
             currentRoom = nextRoom;
-            gui.print("\n");
             gui.println(currentRoom.getLongDescription());
             if(currentRoom.getImageName() != null)
                 gui.showImage(currentRoom.getImageName());
@@ -178,7 +184,6 @@ public class GameEngine
     private void back(Command command) 
     {
         if(command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
             gui.println("Back what?");
             return;
         }
@@ -192,5 +197,30 @@ public class GameEngine
             if(currentRoom.getImageName() != null)
                 gui.showImage(currentRoom.getImageName());
         }
+    }
+
+    private void test(Command command) 
+    {
+        if (!command.hasSecondWord()) {
+            gui.println("Test what?");
+            return;
+        }
+
+        Scanner vScanner;
+        
+        try 
+        { 
+        	vScanner = new Scanner(new File("./" + command.getSecondWord()));
+            while (vScanner.hasNextLine())
+            {
+                String ligne = vScanner.nextLine();
+                interpretCommand(ligne);
+            }
+            vScanner.close();
+        } 
+        catch (FileNotFoundException pObjetException) 
+        {  
+        	gui.println("Le nom du fichier est incorrect.");
+        } 
     }
 }

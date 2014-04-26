@@ -1,0 +1,18 @@
+go west
+look
+eat
+go east
+look
+eat
+go east
+look
+eat
+go west
+look
+eat
+go south
+look
+eat
+go east
+look
+eat
