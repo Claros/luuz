@@ -2,6 +2,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import javax.swing.Timer;
@@ -24,6 +25,7 @@ public class GameEngine implements ActionListener
     private Player player;
     private int limit;
     private Timer timer;
+    private static HashMap<String,Room> rooms;
         
     /**
      * Create the game and initialise its internal map.
@@ -33,6 +35,7 @@ public class GameEngine implements ActionListener
         parser = new Parser();
         player = new Player(10);
         limit = 180;
+        rooms = new HashMap<String,Room>();
         createRooms();
         timer = new Timer(1000, this);//1000 -> 1000ms -> 1s
         timer.start();
@@ -58,6 +61,12 @@ public class GameEngine implements ActionListener
         pub = new Room("in the campus pub", "courtyard.gif");
         lab = new Room("in a computing lab", "stairs.gif");
         office = new Room("the computing admin office", "dungeon.gif");
+        
+        rooms.put("outside", outside);
+        rooms.put("theatre", theatre);
+        rooms.put("pub", pub);
+        rooms.put("lab", lab);
+        rooms.put("office", office);
         
         // initialise room exits
         outside.setExit("east", theatre);
@@ -384,5 +393,10 @@ public class GameEngine implements ActionListener
 			beamer.setCharged(true);
 			beamer.setSavedRoom(player.getCurrentRoom());
 		}
+	}
+	
+	public static HashMap<String,Room> getRooms()
+	{
+		return GameEngine.rooms;
 	}
 }
