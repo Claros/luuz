@@ -32,7 +32,7 @@ public class GameEngine implements ActionListener
     {
         parser = new Parser();
         player = new Player(10);
-        limit = 10;
+        limit = 180;
         createRooms();
         timer = new Timer(1000, this);//1000 -> 1000ms -> 1s
         timer.start();
@@ -78,6 +78,8 @@ public class GameEngine implements ActionListener
         Item magicCookie = new Item("magic-cookie", "It's shining...", 1);
         magicCookie.setEdible(true);
         outside.getItemList().addItem(magicCookie.getName(), magicCookie);
+        Beamer beamer = new Beamer("beamer", "An item to teleport", 1);
+        outside.getItemList().addItem(beamer.getName(), beamer);
 
         player.setCurrentRoom(outside);  // start game outside
     }
@@ -143,6 +145,9 @@ public class GameEngine implements ActionListener
 	    	case ITEMS:
 	        	items();
 	        	break;
+	    	case TELEPORT:
+	        	teleport();
+	        	break;
 	        default:
 	        	gui.println("I don't know what you mean...");
 	        	break;
@@ -185,10 +190,7 @@ public class GameEngine implements ActionListener
         if (nextRoom == null)
             gui.println("There is no door!");
         else {
-        	player.changeRoom(nextRoom);
-            gui.println(player.getCurrentRoom().getLongDescription());
-            if(player.getCurrentRoom().getImageName() != null)
-                gui.showImage(player.getCurrentRoom().getImageName());
+        	this.changeRoom(nextRoom);
         }
     }
 
@@ -253,10 +255,7 @@ public class GameEngine implements ActionListener
         		player.addPreviousRoom(vRoom);
         		return;
         	}
-        	player.changeRoom(vRoom);
-            gui.println(player.getCurrentRoom().getLongDescription());
-            if(player.getCurrentRoom().getImageName() != null)
-                gui.showImage(player.getCurrentRoom().getImageName());
+        	this.changeRoom(vRoom);
         }
     }
 
@@ -345,5 +344,45 @@ public class GameEngine implements ActionListener
     		endGame();
     		timer.stop();
     	}
+	}
+	
+	// ETDDC
+	public void changeRoom(Room pRoom)
+	{
+    	player.changeRoom(pRoom);
+        gui.println(player.getCurrentRoom().getLongDescription());
+        if(player.getCurrentRoom().getImageName() != null)
+            gui.showImage(player.getCurrentRoom().getImageName());
+	}
+	
+	public void teleport()
+	{
+		if (!player.getInventory().hasItem("beamer"))
+		{
+			gui.println("You can not teleport without the beamer.");
+			return;
+		}
+		
+		Beamer beamer = (Beamer) player.getInventory().getItem("beamer");
+		if (beamer.isCharged())
+		{
+			Room vRoom = beamer.getSavedRoom();
+			if (!vRoom.equals(player.getCurrentRoom()))
+			{
+				gui.println("FIRE !!!!");
+				this.changeRoom(vRoom);
+				beamer.setCharged(false);
+			}
+			else
+			{
+				gui.println("You are already in the saved room.");
+			}
+		}
+		else
+		{
+			gui.println("You saved the current room with your beamer.");
+			beamer.setCharged(true);
+			beamer.setSavedRoom(player.getCurrentRoom());
+		}
 	}
 }
