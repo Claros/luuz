@@ -20,9 +20,9 @@ import javax.swing.Timer;
  */
 public class GameEngine implements ActionListener
 {
-    private Parser parser;
-    private UserInterface gui;
-    private Player player;
+    public static Parser parser;
+    public static UserInterface gui;
+    private static Player player;
     private int limit;
     private Timer timer;
     private static HashMap<String,Room> rooms;
@@ -113,236 +113,27 @@ public class GameEngine implements ActionListener
      * If this command ends the game, true is returned, otherwise false is
      * returned.
      */
-    public void interpretCommand(String commandLine) 
+    public static void interpretCommand(String commandLine) 
     {
         gui.println(commandLine);
         Command command = parser.getCommand(commandLine);
-
-        CommandWord commandWord = command.getCommandWord();
-        switch (commandWord)
+        
+        if (command == null)
         {
-        	case HELP:
-        		printHelp();
-        		break;
-        	case GO:
-        		goRoom(command);
-        		break;
-        	case QUIT:
-	            if(command.hasSecondWord())
-	                gui.println("Quit what?");
-	            else
-	                endGame();
-	            break;
-        	case LOOK:
-	        	look();
-	        	break;
-	    	case EAT:
-	        	eat(command);
-	        	break;
-	    	case BACK:
-	        	back(command);
-	        	break;
-	    	case TEST:
-	        	test(command);
-	        	break;
-	    	case TAKE:
-	        	take(command);
-	        	break;
-	    	case DROP:
-	        	drop(command);
-	        	break;
-	    	case ITEMS:
-	        	items();
-	        	break;
-	    	case TELEPORT:
-	        	teleport();
-	        	break;
-	    	case RANDOM:
-	        	random(command);
-	        	break;
-	        default:
-	        	gui.println("I don't know what you mean...");
-	        	break;
+        	gui.println("I don't know what you mean...");
+        }
+        else
+        {
+        	command.execute(player);
         }
         
         gui.print("\n");
     }
 
-    // implementations of user commands:
-
-    /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
-     * command words.
-     */
-    private void printHelp() 
-    {
-        gui.println("You are lost. You are alone. You wander");
-        gui.println("around at Monash Uni, Peninsula Campus." + "\n");
-        gui.print("Your command words are: " + parser.showCommands());
-    }
-
-    /** 
-     * Try to go to one direction. If there is an exit, enter
-     * the new room, otherwise print an error message.
-     */
-    private void goRoom(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            gui.println("Go where?");
-            return;
-        }
-
-        String direction = command.getSecondWord();
-
-        // Try to leave current room.
-        Room nextRoom = player.getCurrentRoom().getExit(direction);
-
-        if (nextRoom == null)
-            gui.println("There is no door!");
-        else {
-        	this.changeRoom(nextRoom);
-        }
-    }
-
-    private void endGame()
+    public static void endGame()
     {
         gui.println("Thank you for playing.  Good bye.");
         gui.enable(false);
-    }
-    
-    private void look()
-    {
-    	gui.println(player.getCurrentRoom().getLongDescription());
-    }
-    
-    private void eat(Command command)
-    {
-        if(!command.hasSecondWord()) {
-            gui.println("Eat what?");
-            return;
-        }
-        
-        String name = command.getSecondWord();
-        
-        if (!player.getInventory().hasItem(name))
-        {
-            gui.println("You have not any " + name);
-            return;
-        }
-        
-        Item item = player.getInventory().getItem(name);
-        if (!item.isEdible())
-        {
-            gui.println("You can not eat " + name);
-            return;
-        }
-        
-        player.getInventory().removeItem(name);
-        gui.println("You ate " + name);
-
-        if (name.equals("magic-cookie"))
-        {
-        	player.setMaxWeight(player.getMaxWeight() + 10);
-            gui.println("You can now wear more items");
-        }
-    }
-
-    private void back(Command command) 
-    {
-        if(command.hasSecondWord()) {
-            gui.println("Back what?");
-            return;
-        }
-
-        if (player.hasPreviousRoom())
-            gui.println("You can't go back!");
-        else {
-        	Room vRoom = player.getPreviousRoom();
-        	String direction = player.getCurrentRoom().getDirection(vRoom);
-        	if (direction == null)
-        	{// If the rooms are not linked from current room, we can not go back
-        		gui.println("The door is locked...");
-        		player.addPreviousRoom(vRoom);
-        		return;
-        	}
-        	this.changeRoom(vRoom);
-        }
-    }
-
-    private void test(Command command) 
-    {
-        if (!command.hasSecondWord()) {
-            gui.println("Test what?");
-            return;
-        }
-
-        Scanner vScanner;
-        
-        try 
-        { 
-        	vScanner = new Scanner(new File("./" + command.getSecondWord()));
-            while (vScanner.hasNextLine())
-            {
-                String ligne = vScanner.nextLine();
-                interpretCommand(ligne);
-            }
-            vScanner.close();
-        } 
-        catch (FileNotFoundException pObjetException) 
-        {  
-        	gui.println("File does not exist.");
-        } 
-    }
-    
-    private void take(Command command)
-    {
-        if (!command.hasSecondWord()) {
-            gui.println("Take what?");
-            return;
-        }
-        
-        if (player.getCurrentRoom().getItemList().hasItem(command.getSecondWord()))
-        {
-        	Item item = player.getCurrentRoom().getItemList().getItem(command.getSecondWord());
-        	if ((player.getInventory().getTotalWeight() + item.getWeight()) > player.getMaxWeight())
-        	{
-        		gui.println("You can not carry more items.");
-        	} else {
-            	player.getInventory().addItem(item);
-            	player.getCurrentRoom().getItemList().removeItem(command.getSecondWord());
-            	gui.println("You took " + item.getName());
-        	}
-        } else {
-        	gui.println(command.getSecondWord() + " does not exist.");
-        }
-    }
-    
-    private void drop(Command command)
-    {
-        if (!command.hasSecondWord()) {
-            gui.println("Drop what?");
-            return;
-        }
-        
-        String name = command.getSecondWord();
-        
-    	if (player.getInventory().hasItem(name))
-    	{
-    		player.getCurrentRoom().getItemList().addItem(name, player.getInventory().getItem(name));
-        	gui.println("You droped " + name);
-    		player.getInventory().removeItem(name);
-    	}
-    	else
-    	{
-    		gui.println("You does not have this item.");
-    	}
-    }
-    
-    private void items()
-    {
-    	gui.println(player.getLongInventory());
     }
 
 	@Override
@@ -367,60 +158,8 @@ public class GameEngine implements ActionListener
             gui.showImage(player.getCurrentRoom().getImageName());
 	}
 	
-	public void teleport()
-	{
-		if (!player.getInventory().hasItem("beamer"))
-		{
-			gui.println("You can not teleport without the beamer.");
-			return;
-		}
-		
-		Beamer beamer = (Beamer) player.getInventory().getItem("beamer");
-		if (beamer.isCharged())
-		{
-			Room vRoom = beamer.getSavedRoom();
-			if (!vRoom.equals(player.getCurrentRoom()))
-			{
-				gui.println("FIRE !!!!");
-				this.changeRoom(vRoom);
-				beamer.setCharged(false);
-			}
-			else
-			{
-				gui.println("You are already in the saved room.");
-			}
-		}
-		else
-		{
-			gui.println("You saved the current room with your beamer.");
-			beamer.setCharged(true);
-			beamer.setSavedRoom(player.getCurrentRoom());
-		}
-	}
-	
 	public static HashMap<String,Room> getRooms()
 	{
 		return GameEngine.rooms;
-	}
-	
-	public void random(Command command)
-	{
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we disable the seed...
-        	gui.println("Random enabled.");
-        	RoomRandomizer.setSeed(null);
-        }
-        else
-        {
-        	try{
-        		RoomRandomizer.setSeed( Long.parseLong(command.getSecondWord(), 10) );
-        	} catch (NumberFormatException E)
-        	{
-        		gui.println("Wrong seed.");
-        		return;
-        	}
-        	
-    		gui.println("You changed the seed.");        		
-        }
 	}
 }

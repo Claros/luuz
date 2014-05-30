@@ -66,4 +66,15 @@ class CommandWords
         }
         return commands.toString();
     }
+    
+    /**
+     * Gets the command.
+     *
+     * @param pCommandWord the command word
+     * @return the command
+     */
+    public Command getCommand(String commandWord)
+    {
+        return this.getCommandWord(commandWord).getCommand();
+    }
 }

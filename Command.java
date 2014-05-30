@@ -17,9 +17,8 @@
  * @version 1.0 (February 2002)
  */
 
-class Command
+public abstract class Command
 {
-    private CommandWord commandWord;
     private String secondWord;
 
     /**
@@ -27,19 +26,8 @@ class Command
      * either one (or both) can be null. The command word should be null to
      * indicate that this was a command that is not recognised by this game.
      */
-    public Command(CommandWord firstWord, String secondWord)
+    public Command()
     {
-        commandWord = firstWord;
-        this.secondWord = secondWord;
-    }
-
-    /**
-     * Return the command word (the first word) of this command. If the
-     * command was not understood, the result is null.
-     */
-    public CommandWord getCommandWord()
-    {
-        return commandWord;
     }
 
     /**
@@ -52,11 +40,13 @@ class Command
     }
 
     /**
-     * Return true if this command was not understood.
+     * Define the second word of this command (the word
+     * entered after the command word). Null indicates that 
+     * there was no second word.
      */
-    public boolean isUnknown()
+    public void setSecondWord(String secondWord)
     {
-        return (commandWord == CommandWord.UNKNOWN);
+        this.secondWord = secondWord;
     }
 
     /**
@@ -66,5 +56,13 @@ class Command
     {
         return (secondWord != null);
     }
+
+    /**
+     * Execute this command. A flag is returned indicating whether
+     * the game is over as a result of this command.
+     * 
+     * @return True, if game should exit; false otherwise.
+     */
+    public abstract boolean execute(Player player);
 }
 
