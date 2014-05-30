@@ -1,6 +1,10 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
+import javax.swing.Timer;
 
 /**
  *  This class is part of the "World of Zuul" application. 
@@ -13,12 +17,13 @@ import java.util.Scanner;
  * @author  Michael Kolling and David J. Barnes
  * @version 1.0 (Jan 2003)
  */
-public class GameEngine 
+public class GameEngine implements ActionListener
 {
     private Parser parser;
     private UserInterface gui;
     private Player player;
     private int limit;
+    private Timer timer;
         
     /**
      * Create the game and initialise its internal map.
@@ -29,12 +34,15 @@ public class GameEngine
         player = new Player(10);
         limit = 10;
         createRooms();
+        timer = new Timer(1000, this);//1000 -> 1000ms -> 1s
+        timer.start();
     }
 
     public void setGUI(UserInterface userInterface)
     {
         gui = userInterface;
         printWelcome();
+    	gui.setTimer("" + limit);
     }
 
     /**
@@ -181,12 +189,6 @@ public class GameEngine
             gui.println(player.getCurrentRoom().getLongDescription());
             if(player.getCurrentRoom().getImageName() != null)
                 gui.showImage(player.getCurrentRoom().getImageName());
-        	limit--;
-        	if (limit <= 0)
-        	{
-        		gui.println("You lose.");
-        		endGame();
-        	}
         }
     }
 
@@ -323,4 +325,17 @@ public class GameEngine
     {
     	gui.println(player.getLongInventory());
     }
+
+	@Override
+	// Called by Timer every second
+	public void actionPerformed(ActionEvent e) {
+    	limit--;
+    	gui.setTimer("" + limit);
+    	if (limit <= 0)
+    	{
+    		gui.println("You lose.");
+    		endGame();
+    		timer.stop();
+    	}
+	}
 }

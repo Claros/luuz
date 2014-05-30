@@ -16,7 +16,7 @@ public class UserInterface implements ActionListener
     private GameEngine engine;
     private JFrame myFrame;
     private JTextField entryField;
-    private JTextArea log;
+    private JTextArea log, timer;
     private JLabel image;
     private JButton buttonLook, buttonEast, buttonWest, buttonNorth, buttonSouth; 
 
@@ -49,6 +49,11 @@ public class UserInterface implements ActionListener
     {
         log.append(text + "\n");
         log.setCaretPosition(log.getDocument().getLength());
+    }
+
+    public void setTimer(String text)
+    {
+        timer.setText(text);
     }
 
     /**
@@ -91,12 +96,15 @@ public class UserInterface implements ActionListener
 
         log = new JTextArea();
         log.setEditable(false);
+        timer = new JTextArea();
+        timer.setEditable(false);
         JScrollPane listScroller = new JScrollPane(log);
         listScroller.setPreferredSize(new Dimension(200, 200));
         listScroller.setMinimumSize(new Dimension(100,100));
 
         JPanel panel = new JPanel(),
-        		panel2 = new JPanel();
+        		panel2 = new JPanel(),
+        		panel3 = new JPanel();
         image = new JLabel();
 
         buttonLook = new JButton("look");
@@ -109,7 +117,7 @@ public class UserInterface implements ActionListener
         panel.add(image, BorderLayout.NORTH);
         panel.add(listScroller, BorderLayout.CENTER);
         panel.add(entryField, BorderLayout.SOUTH);
-        panel.add(buttonLook, BorderLayout.EAST);
+        panel.add(panel3, BorderLayout.EAST);
         panel.add(panel2, BorderLayout.WEST);
 
         panel2.setLayout(new BorderLayout());
@@ -117,6 +125,10 @@ public class UserInterface implements ActionListener
         panel2.add(buttonSouth, BorderLayout.SOUTH);
         panel2.add(buttonEast, BorderLayout.EAST);
         panel2.add(buttonWest, BorderLayout.WEST);
+        
+        panel3.setLayout(new BorderLayout());
+        panel3.add(buttonLook, BorderLayout.CENTER);
+        panel3.add(timer, BorderLayout.SOUTH);
 
         myFrame.getContentPane().add(panel, BorderLayout.CENTER);
 
