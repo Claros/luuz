@@ -157,6 +157,9 @@ public class GameEngine implements ActionListener
 	    	case TELEPORT:
 	        	teleport();
 	        	break;
+	    	case RANDOM:
+	        	random(command);
+	        	break;
 	        default:
 	        	gui.println("I don't know what you mean...");
 	        	break;
@@ -398,5 +401,26 @@ public class GameEngine implements ActionListener
 	public static HashMap<String,Room> getRooms()
 	{
 		return GameEngine.rooms;
+	}
+	
+	public void random(Command command)
+	{
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we disable the seed...
+        	gui.println("Random enabled.");
+        	RoomRandomizer.setSeed(null);
+        }
+        else
+        {
+        	try{
+        		RoomRandomizer.setSeed( Long.parseLong(command.getSecondWord(), 10) );
+        	} catch (NumberFormatException E)
+        	{
+        		gui.println("Wrong seed.");
+        		return;
+        	}
+        	
+    		gui.println("You changed the seed.");        		
+        }
 	}
 }
