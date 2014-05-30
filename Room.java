@@ -22,6 +22,7 @@ class Room
     private HashMap<String, Room> exits;
 	private String imageName;
 	private ItemList items;
+	
 
     /**
      * Create a room described "description". Initially, it has
@@ -103,5 +104,21 @@ class Room
 	public ItemList getItemList()
 	{
 		return items;
+	}
+	
+	// Find the direction linking two rooms
+	// if pRoom is at "east" of this room, return "east" etc...
+	public String getDirection(Room pRoom)
+	{
+		String direction = null;
+		for (String key : exits.keySet())
+		{
+			if (pRoom.equals(exits.get(key)))
+			{
+				direction = key;
+				break;
+			}
+		}
+		return direction;
 	}
 }

@@ -68,7 +68,7 @@ public class GameEngine implements ActionListener
 
         pub.setExit("east", outside);
 
-        lab.setExit("north", outside);
+        //lab.setExit("north", outside);
         lab.setExit("east", office);
 
         office.setExit("west", lab);
@@ -245,7 +245,15 @@ public class GameEngine implements ActionListener
         if (player.hasPreviousRoom())
             gui.println("You can't go back!");
         else {
-        	player.changeRoom(player.getPreviousRoom());
+        	Room vRoom = player.getPreviousRoom();
+        	String direction = player.getCurrentRoom().getDirection(vRoom);
+        	if (direction == null)
+        	{// If the rooms are not linked from current room, we can not go back
+        		gui.println("The door is locked...");
+        		player.addPreviousRoom(vRoom);
+        		return;
+        	}
+        	player.changeRoom(vRoom);
             gui.println(player.getCurrentRoom().getLongDescription());
             if(player.getCurrentRoom().getImageName() != null)
                 gui.showImage(player.getCurrentRoom().getImageName());
