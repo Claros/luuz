@@ -57,7 +57,7 @@ public class GameEngine implements ActionListener
       
         // create the rooms
         outside = new Room("outside the main entrance of the university", "outside.gif");
-        theatre = new Room("in a lecture theatre", "castle.gif");
+        theatre = new TransporterRoom("in a lecture theatre", "castle.gif");
         pub = new Room("in the campus pub", "courtyard.gif");
         lab = new Room("in a computing lab", "stairs.gif");
         office = new Room("the computing admin office", "dungeon.gif");
@@ -77,7 +77,7 @@ public class GameEngine implements ActionListener
 
         pub.setExit("east", outside);
 
-        //lab.setExit("north", outside);
+        lab.setExit("north", outside);
         lab.setExit("east", office);
 
         office.setExit("west", lab);
