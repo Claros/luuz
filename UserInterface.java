@@ -18,7 +18,7 @@ public class UserInterface implements ActionListener
     private JTextField entryField;
     private JTextArea log, timer;
     private JLabel image;
-    private JButton buttonLook, buttonEast, buttonWest, buttonNorth, buttonSouth; 
+    private JButton buttonLook, buttonEast, buttonWest, buttonNorth, buttonSouth, buttonBack; 
 
     /**
      * Construct a UserInterface. As a parameter, a Game Engine
@@ -112,6 +112,7 @@ public class UserInterface implements ActionListener
         buttonSouth = new JButton("go south");
         buttonEast = new JButton("go east");
         buttonWest = new JButton("go west");
+        buttonBack = new JButton("back");
 
         panel.setLayout(new BorderLayout());
         panel.add(image, BorderLayout.NORTH);
@@ -129,6 +130,7 @@ public class UserInterface implements ActionListener
         panel3.setLayout(new BorderLayout());
         panel3.add(buttonLook, BorderLayout.CENTER);
         panel3.add(timer, BorderLayout.SOUTH);
+        panel3.add(buttonBack, BorderLayout.NORTH);
 
         myFrame.getContentPane().add(panel, BorderLayout.CENTER);
 
@@ -143,6 +145,7 @@ public class UserInterface implements ActionListener
         buttonSouth.addActionListener(this);
         buttonEast.addActionListener(this);
         buttonWest.addActionListener(this);
+        buttonBack.addActionListener(this);
 
         myFrame.pack();
         myFrame.setVisible(true);
@@ -177,6 +180,10 @@ public class UserInterface implements ActionListener
         else if (e.getSource() == buttonWest)
         {
         	engine.interpretCommand("go west");
+        }
+        else if (e.getSource() == buttonBack)
+        {
+        	engine.interpretCommand("back");
         }
     }
 
