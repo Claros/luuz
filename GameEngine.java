@@ -65,6 +65,9 @@ public class GameEngine
         
         outside.getItemList().addItem("caca", "A big shit", 10);
         outside.getItemList().addItem("pipi", "It's quite sliding there...", 1);
+        Item magicCookie = new Item("magic-cookie", "It's shining...", 1);
+        magicCookie.setEdible(true);
+        outside.getItemList().addItem(magicCookie.getName(), magicCookie);
 
         player.setCurrentRoom(outside);  // start game outside
     }
@@ -113,7 +116,7 @@ public class GameEngine
         else if (commandWord.equals("look"))
         	look();
         else if (commandWord.equals("eat"))
-        	eat();
+        	eat(command);
         else if (commandWord.equals("back"))
         	back(command);
         else if (commandWord.equals("test"))
@@ -180,9 +183,36 @@ public class GameEngine
     	gui.println(player.getCurrentRoom().getLongDescription());
     }
     
-    private void eat()
+    private void eat(Command command)
     {
-    	gui.println("You have eaten now and you are not hungry any more.");
+        if(!command.hasSecondWord()) {
+            gui.println("Eat what?");
+            return;
+        }
+        
+        String name = command.getSecondWord();
+        
+        if (!player.getInventory().hasItem(name))
+        {
+            gui.println("You have not any " + name);
+            return;
+        }
+        
+        Item item = player.getInventory().getItem(name);
+        if (!item.isEdible())
+        {
+            gui.println("You can not eat " + name);
+            return;
+        }
+        
+        player.getInventory().removeItem(name);
+        gui.println("You ate " + name);
+
+        if (name.equals("magic-cookie"))
+        {
+        	player.setMaxWeight(player.getMaxWeight() + 10);
+            gui.println("You can now wear more items");
+        }
     }
 
     private void back(Command command) 
