@@ -1,3 +1,17 @@
+take magic-cookie
+eat magic-cookie
+take caca
+take pipi
+drop pipi
+drop caca
+teleport
+take beamer
+teleport
+teleport
+go west
+look
+eat
+teleport
 go west
 look
 eat
