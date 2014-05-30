@@ -102,30 +102,30 @@ public class GameEngine
             return;
         }
 
-        String commandWord = command.getCommandWord();
-        if (commandWord.equals("help"))
+        CommandWord commandWord = command.getCommandWord();
+        if (commandWord.equals(CommandWord.HELP))
             printHelp();
-        else if (commandWord.equals("go"))
+        else if (commandWord.equals(CommandWord.GO))
             goRoom(command);
-        else if (commandWord.equals("quit")) {
+        else if (commandWord.equals(CommandWord.QUIT)) {
             if(command.hasSecondWord())
                 gui.println("Quit what?");
             else
                 endGame();
         }
-        else if (commandWord.equals("look"))
+        else if (commandWord.equals(CommandWord.LOOK))
         	look();
-        else if (commandWord.equals("eat"))
+        else if (commandWord.equals(CommandWord.EAT))
         	eat(command);
-        else if (commandWord.equals("back"))
+        else if (commandWord.equals(CommandWord.BACK))
         	back(command);
-        else if (commandWord.equals("test"))
+        else if (commandWord.equals(CommandWord.TEST))
         	test(command);
-        else if (commandWord.equals("take"))
+        else if (commandWord.equals(CommandWord.TAKE))
         	take(command);
-        else if (commandWord.equals("drop"))
+        else if (commandWord.equals(CommandWord.DROP))
         	drop(command);
-        else if (commandWord.equals("items"))
+        else if (commandWord.equals(CommandWord.ITEMS))
         	items();
         
         gui.print("\n");
