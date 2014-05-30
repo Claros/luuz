@@ -97,36 +97,46 @@ public class GameEngine
         gui.println(commandLine);
         Command command = parser.getCommand(commandLine);
 
-        if(command.isUnknown()) {
-            gui.println("I don't know what you mean...");
-            return;
-        }
-
         CommandWord commandWord = command.getCommandWord();
-        if (commandWord.equals(CommandWord.HELP))
-            printHelp();
-        else if (commandWord.equals(CommandWord.GO))
-            goRoom(command);
-        else if (commandWord.equals(CommandWord.QUIT)) {
-            if(command.hasSecondWord())
-                gui.println("Quit what?");
-            else
-                endGame();
+        switch (commandWord)
+        {
+        	case HELP:
+        		printHelp();
+        		break;
+        	case GO:
+        		goRoom(command);
+        		break;
+        	case QUIT:
+	            if(command.hasSecondWord())
+	                gui.println("Quit what?");
+	            else
+	                endGame();
+	            break;
+        	case LOOK:
+	        	look();
+	        	break;
+	    	case EAT:
+	        	eat(command);
+	        	break;
+	    	case BACK:
+	        	back(command);
+	        	break;
+	    	case TEST:
+	        	test(command);
+	        	break;
+	    	case TAKE:
+	        	take(command);
+	        	break;
+	    	case DROP:
+	        	drop(command);
+	        	break;
+	    	case ITEMS:
+	        	items();
+	        	break;
+	        default:
+	        	gui.println("I don't know what you mean...");
+	        	break;
         }
-        else if (commandWord.equals(CommandWord.LOOK))
-        	look();
-        else if (commandWord.equals(CommandWord.EAT))
-        	eat(command);
-        else if (commandWord.equals(CommandWord.BACK))
-        	back(command);
-        else if (commandWord.equals(CommandWord.TEST))
-        	test(command);
-        else if (commandWord.equals(CommandWord.TAKE))
-        	take(command);
-        else if (commandWord.equals(CommandWord.DROP))
-        	drop(command);
-        else if (commandWord.equals(CommandWord.ITEMS))
-        	items();
         
         gui.print("\n");
     }
