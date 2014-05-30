@@ -18,6 +18,7 @@ public class GameEngine
     private Parser parser;
     private UserInterface gui;
     private Player player;
+    private int limit;
         
     /**
      * Create the game and initialise its internal map.
@@ -26,6 +27,7 @@ public class GameEngine
     {
         parser = new Parser();
         player = new Player(10);
+        limit = 10;
         createRooms();
     }
 
@@ -179,6 +181,12 @@ public class GameEngine
             gui.println(player.getCurrentRoom().getLongDescription());
             if(player.getCurrentRoom().getImageName() != null)
                 gui.showImage(player.getCurrentRoom().getImageName());
+        	limit--;
+        	if (limit <= 0)
+        	{
+        		gui.println("You lose.");
+        		endGame();
+        	}
         }
     }
 
