@@ -1,3 +1,6 @@
+package rooms;
+import mechanics.GameEngine;
+
 
 public class TransporterRoom extends Room {
 	public TransporterRoom(String description, String image) {

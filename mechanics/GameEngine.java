@@ -1,11 +1,17 @@
+package mechanics;
+import items.Beamer;
+import items.Item;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.Scanner;
-
 import javax.swing.Timer;
+
+import characters.Player;
+import rooms.Room;
+import rooms.TransporterRoom;
+import commands.Command;
+import commands.Parser;
 
 /**
  *  This class is part of the "World of Zuul" application. 

@@ -1,3 +1,4 @@
+package items;
 public class Item {
 	private String description;
 	private int weight;

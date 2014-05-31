@@ -1,3 +1,4 @@
+package commands;
 
 public enum CommandWord {
 	GO("go", new GoCommand()), 

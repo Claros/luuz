@@ -1,3 +1,7 @@
+package commands;
+import characters.Player;
+import mechanics.GameEngine;
+
 
 public class DropCommand extends Command {
 

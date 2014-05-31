@@ -1,3 +1,9 @@
+package commands;
+import characters.Player;
+import mechanics.GameEngine;
+import rooms.Room;
+import items.Beamer;
+
 
 public class TeleportCommand extends Command {
 

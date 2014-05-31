@@ -1,6 +1,10 @@
+package commands;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+
+import characters.Player;
+import mechanics.GameEngine;
 
 
 public class TestCommand extends Command {

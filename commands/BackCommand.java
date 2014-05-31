@@ -1,3 +1,8 @@
+package commands;
+import characters.Player;
+import mechanics.GameEngine;
+import rooms.Room;
+
 
 public class BackCommand extends Command {
 

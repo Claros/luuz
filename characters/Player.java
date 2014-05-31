@@ -1,4 +1,9 @@
+package characters;
+import items.ItemList;
+
 import java.util.Stack;
+
+import rooms.Room;
 
 
 public class Player {

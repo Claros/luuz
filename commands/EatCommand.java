@@ -1,3 +1,8 @@
+package commands;
+import characters.Player;
+import mechanics.GameEngine;
+import items.Item;
+
 
 public class EatCommand extends Command {
 

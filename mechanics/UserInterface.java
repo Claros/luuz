@@ -1,8 +1,8 @@
+package mechanics;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
-import java.awt.image.*;
 
 /**
  * This class implements a simple graphical user interface with a text entry
@@ -13,7 +13,6 @@ import java.awt.image.*;
  */
 public class UserInterface implements ActionListener
 {
-    private GameEngine engine;
     private JFrame myFrame;
     private JTextField entryField;
     private JTextArea log, timer;
@@ -25,11 +24,9 @@ public class UserInterface implements ActionListener
      * (an object processing and executing the game commands) is
      * needed.
      * 
-     * @param gameEngine  The GameEngine object implementing the game logic.
      */
-    public UserInterface(GameEngine gameEngine)
+    public UserInterface()
     {
-        engine = gameEngine;
         createGUI();
     }
 
@@ -163,27 +160,27 @@ public class UserInterface implements ActionListener
         } 
         else if (e.getSource() == buttonLook)
         {
-        	engine.interpretCommand("look");
+        	GameEngine.interpretCommand("look");
         }
         else if (e.getSource() == buttonNorth)
         {
-        	engine.interpretCommand("go north");
+        	GameEngine.interpretCommand("go north");
         }
         else if (e.getSource() == buttonSouth)
         {
-        	engine.interpretCommand("go south");
+        	GameEngine.interpretCommand("go south");
         }
         else if (e.getSource() == buttonEast)
         {
-        	engine.interpretCommand("go east");
+        	GameEngine.interpretCommand("go east");
         }
         else if (e.getSource() == buttonWest)
         {
-        	engine.interpretCommand("go west");
+        	GameEngine.interpretCommand("go west");
         }
         else if (e.getSource() == buttonBack)
         {
-        	engine.interpretCommand("back");
+        	GameEngine.interpretCommand("back");
         }
     }
 
@@ -196,6 +193,6 @@ public class UserInterface implements ActionListener
         String input = entryField.getText();
         entryField.setText("");
 
-        engine.interpretCommand(input);
+        GameEngine.interpretCommand(input);
     }
 }

@@ -1,3 +1,6 @@
+import mechanics.GameEngine;
+import mechanics.UserInterface;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -23,7 +26,7 @@ public class Game
     public Game() 
     {
 		engine = new GameEngine();
-		gui = new UserInterface(engine);
+		gui = new UserInterface();
 		engine.setGUI(gui);
     }
 }

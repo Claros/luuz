@@ -1,3 +1,6 @@
+package items;
+import rooms.Room;
+
 
 public class Beamer extends Item {
 	private Room savedRoom;

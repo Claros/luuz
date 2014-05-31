@@ -1,3 +1,4 @@
+package commands;
 import java.util.StringTokenizer;
 
 /*
@@ -17,7 +18,7 @@ import java.util.StringTokenizer;
  * @version 1.0 (February 2002)
  */
 
-class Parser 
+public class Parser 
 {
 
     private CommandWords commands;  // holds all valid command words
